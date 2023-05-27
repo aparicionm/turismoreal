@@ -77,11 +77,14 @@ WSGI_APPLICATION = 'turismoreal.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'turismoreal',
+        'NAME': 'realturism',
         'USER': 'admin',
         'PASSWORD': 'picoreal123',
         'HOST': 'turismoreal.cucp68u8tghj.us-east-2.rds.amazonaws.com',
         'PORT': '3306',
+        'OPTIONS': {
+            'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
+        },
     }
 }
 
