@@ -1,14 +1,30 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import Clientes
+from . import models, forms
 from .forms import ClientesForm
 
 
 # Create your views here.
 def home (request):
-    return render(request, 'app/home.html')
+    departamentos = models.Departamento.objects.all()
+    data = {
+        'departamentos': departamentos
+    }
+    return render(request, 'app/home.html', data)
 
 def contacto (request):
-    return render(request, 'app/contacto.html')
+    data = {
+        'form': forms.ContactoForm()
+    }
+    if request.method == 'POST':
+        formulario = forms.ContactoForm(data=request.POST)
+        if formulario.is_valid():
+            formulario.save()
+            data["mensaje"] = "contacto enviado"
+        else:
+            data["form"] = formulario
+    return render(request, 'app/contacto.html', data)
+
 def galeria (request):
     return render(request, 'app/galeria.html')
 
