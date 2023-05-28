@@ -1,4 +1,5 @@
-from django.db import models
+from django.db import models 
+
 
 # Create your models here.
 
@@ -26,4 +27,14 @@ class Reserva(models.Model):
     #id_tour
     def __str__(self):
         return self.precio
+    
+class Clientes(models.Model):
+    #id_clientes = models.AutoField(primary_key=True)
+    nombre_cliente = models.CharField(max_length=50, unique=True)
+    rut_cliente = models.CharField(max_length=50, unique=True)
+    email_cliente = models.CharField(max_length=50, unique=True)
+    #apellido_clientes = models.CharField(max_length=50, unique=True)
+    #direcicion_clientes = models.CharField(max_length=50)
+    def __str__(self):
+        return self.nombre_cliente
 

@@ -1,0 +1,48 @@
+{% extends 'app/base.html' %}
+{% block contenido %}
+{% load humanize %} 
+<br><br>
+
+<div class="card">
+    <div class="card-body"> 
+        <h2>Listado Clientes</h2>
+        <hr>
+        <br>
+        <table class="table table-striped talbe-hover table-responsive-sm">  
+
+            <tr>
+                
+                <th>Nombre</th>
+                <th>Rut</th>
+                <th>Email</th>
+                <th>Opciones</th>
+                
+            </tr>   
+        
+              {% for p in cliente %}
+        
+                    <tr>
+        
+                        <td>{{ p.nombre_cliente | title }}</td>
+                        <td>{{ p.rut_cliente | title }}</td>
+                        <td>{{ p.email_cliente | title }}</td>
+                        <td>
+                            <a href="{%url 'modificar_Clientes' p.id %}" class="btn btn-info">Modificar</a>
+                            <a href="{%  url 'eliminar_Clientes' p.id %}" class="btn btn-danger">Eliminar</a>
+                        </td>
+         
+                    </tr>
+        
+                   
+        
+        
+                {% endfor %}
+        
+        </table>
+    </div>
+</div>
+
+
+
+
+{% endblock %}
