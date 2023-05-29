@@ -68,12 +68,18 @@ class DepartamentoForm(forms.ModelForm):
         #fields = ["nombre_dep","direccion_dep","descripcion_dep","valordiario_dep","inventario_dep","imagen"]
 
 class TourForm(forms.ModelForm):
+    nombre = forms.CharField(widget=forms.TextInput(attrs={"class":"form-control mb-3"}))  
+    descripcion = forms.CharField(widget=forms.Textarea(attrs={"class":"form-control mb-3"}))
+    departamento = forms.ModelChoiceField(queryset=models.Departamento.objects.all(), widget=forms.Select(attrs={"class":"form-select mb-3"}))
     class Meta:
         model = Tour
         fields = ('nombre', 'descripcion', 'departamento')
 
 
 class ServiciosExtraForm(forms.ModelForm):
+    nombre = forms.CharField(widget=forms.TextInput(attrs={"class":"form-control mb-3"})) 
+    wifi = forms.BooleanField(widget=forms.CheckboxInput(attrs={"class":"form-check mb-3"}))
+    reseñas = forms.CharField(widget=forms.Textarea(attrs={"class":"form-control mb-3"}))
     class Meta:
         model = ServiciosExtra
         fields = '__all__'

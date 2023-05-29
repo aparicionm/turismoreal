@@ -1,22 +1,24 @@
-{% load static %}
-
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Crear/Editar Servicio Extra</title>
-    <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
-</head>
-<body>
-    <div class="container">
-        <h1 class="mt-5">Crear/Editar Servicio Extra</h1>
-        <form method="post">
-            {% csrf_token %}
-            {{ form.as_p }}
-            <button type="submit" class="btn btn-primary">Guardar</button>
-        </form>
+{% extends 'app/base.html' %}
+{% block contenido %}
+<br><br>
+<div class="row">
+    <div class="col-12 col-md-6 offset-md-3">
+        <div class="card">
+            <div class="card-body">
+                <h2>Editar Servicio Extra</h2>
+                <hr>
+                <form action="" method="POST" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    {{ form.as_p }}
+                    <div class="d-flex justify-content-end">
+                        <input type="reset" value="Borrar" class="btn btn-secondary">&nbsp;
+                        <input type="submit" value="Modificar" class="btn btn-primary">
+                    </div>
+                    {{ mensaje }}
+                </form>
+            </div>
+        </div>    
     </div>
-    <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
-</body>
-</html>
+</div>
+<br><br>
+{% endblock %}

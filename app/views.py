@@ -139,6 +139,8 @@ def agregar_Clientes(request):
     return render(request,'app/Clientes/agregar.html',data)
 
 
+
+
 def listar_Clientes(request):
 
     cliente = Clientes.objects.all()
@@ -207,14 +209,17 @@ def tour_detail(request, pk):
     return render(request, 'app/Tour/tour_detail.html',  {'tour': tour})
 
 def tour_new(request):
+    data={
+        'form': TourForm()
+    }
     if request.method == "POST":
-        form = TourForm(request.POST)
+        form = TourForm(data=request.POST)
         if form.is_valid():
             tour = form.save()
             return redirect('tour_detail', pk=tour.pk)
     else:
         form = TourForm()
-    return render(request, 'app/Tour/tour_edit.html', {'form': form})
+    return render(request, 'app/Tour/tour_new.html', data)
 
 def tour_edit(request, pk):
     tour = get_object_or_404(Tour, pk=pk)
@@ -222,7 +227,7 @@ def tour_edit(request, pk):
         form = TourForm(request.POST, instance=tour)
         if form.is_valid():
             tour = form.save()
-            return redirect('tour_detail', pk=tour.pk)
+            return redirect(to="tour_list")
     else:
         form = TourForm(instance=tour)
     return render(request, 'app/Tour/tour_edit.html', {'form': form})

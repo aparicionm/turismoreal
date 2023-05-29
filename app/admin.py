@@ -16,3 +16,6 @@ class DepartamentoAdmin(admin.ModelAdmin):
 admin.site.register(models.Departamento, DepartamentoAdmin)
 admin.site.register(models.Reserva)
 admin.site.register(models.Contacto)
+admin.site.register(models.Clientes)
+admin.site.register(models.Tour)
+admin.site.register(models.ServiciosExtra)

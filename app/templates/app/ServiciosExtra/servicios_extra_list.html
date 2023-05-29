@@ -1,25 +1,49 @@
-{% load static %}
-
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Servicios Extra</title>
-    <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
-</head>
-<body>
-    <div class="container">
-        <h1 class="mt-5">Servicios Extra</h1>
-        <ul class="list-group mt-4">
-            {% for servicio_extra in servicios_extra %}
-                <li class="list-group-item">
-                    <a href="{% url 'servicios_extra_detail' servicio_extra.pk %}">{{ servicio_extra.nombre }}</a>
-                </li>
-            {% endfor %}
-        </ul>
-        <a class="btn btn-primary mt-4" href="{% url 'servicios_extra_create' %}">Crear Servicio Extra</a>
+{% extends 'app/base.html' %}
+{% block contenido %}
+<br><br>
+<div class="container">
+    <div class="row">
+        <div class="col-6 text-center">
+            <h2>Listado de servicios extras</h2>
+        </div>
+        <div class="col-6">
+            <!--<a href="{% url 'tour_new' %}" class="btn btn-success btn-sm">Agregar tour</a>-->
+        </div>
+        <br><br><hr>
     </div>
-    <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
-</body>
-</html>
+    <div class="row">
+        <div class="col-12">
+            <div class="table-responsive">
+                <table class="table align-middle">
+                  <thead>
+                    <tr>
+                        <th>Nombre</th>
+                        <th>Wifi</th>
+                        <th>Descripcion</th>
+                    </tr>
+                  </thead>
+                  
+                  <tbody>
+                    {% for servicio_extra in servicios_extra %}
+                    <tr>
+                        <td class="align-top">{{ servicio_extra.nombre }}</td>
+                        <td class="align-top">{% if servicio_extra.wifi %}
+                            Si
+                            {% else %}
+                            No
+                            {% endif %}</td>
+                        <td class="align-top">{{ servicio_extra.reseñas }}</td>
+                        <td class="align-top"><a href="{% url 'servicios_extra_update' servicio_extra.id %}" class="btn btn-info btn-sm">Modificar</a></td>
+                        <td class="align-top"><a href="{% url 'servicios_extra_delete' servicio_extra.id %}" class="btn btn-danger btn-sm">Eliminar</a></td>
+                    </tr>
+                    {% endfor %}
+                  </tbody>
+                </table>
+                <div>
+                    {% include 'app/paginator.html' %}
+                  </div>
+              </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

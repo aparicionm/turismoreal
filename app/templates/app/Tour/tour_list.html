@@ -1,4 +1,45 @@
-{% for tour in tours %}
-  <h2><a href="{% url 'tour_detail' pk=tour.pk %}">{{ tour.nombre }}</a></h2>
-  <p>{{ tour.descripcion }}</p>
-{% endfor %}
+{% extends 'app/base.html' %}
+{% block contenido %}
+<br><br>
+<div class="container">
+    <div class="row">
+        <div class="col-6 text-center">
+            <h2>Listado de tours</h2>
+        </div>
+        <div class="col-6">
+            <!--<a href="{% url 'tour_new' %}" class="btn btn-success btn-sm">Agregar tour</a>-->
+        </div>
+        <br><br><hr>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <div class="table-responsive">
+                <table class="table align-middle">
+                  <thead>
+                    <tr>
+                        <th>Nombre</th>
+                        <th>Descripcion</th>
+                        <th>Departamento</th>
+                    </tr>
+                  </thead>
+                  
+                  <tbody>
+                    {% for tour in tours %}
+                    <tr>
+                        <td class="align-top">{{ tour.nombre }}</td>
+                        <td class="align-top">{{ tour.descripcion }}</td>
+                        <td class="align-top">{{ tour.departamento }}</td>
+                        <td class="align-top"><a href="{% url 'tour_edit' tour.id %}" class="btn btn-info btn-sm">Modificar</a></td>
+                        <td class="align-top"><a href="{% url 'tour_detail' tour.id %}" class="btn btn-danger btn-sm">Eliminar</a></td>
+                    </tr>
+                    {% endfor %}
+                  </tbody>
+                </table>
+                <div>
+                    {% include 'app/paginator.html' %}
+                  </div>
+              </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
