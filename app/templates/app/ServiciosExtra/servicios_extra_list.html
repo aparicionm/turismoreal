@@ -1,0 +1,25 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Servicios Extra</title>
+    <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <h1 class="mt-5">Servicios Extra</h1>
+        <ul class="list-group mt-4">
+            {% for servicio_extra in servicios_extra %}
+                <li class="list-group-item">
+                    <a href="{% url 'servicios_extra_detail' servicio_extra.pk %}">{{ servicio_extra.nombre }}</a>
+                </li>
+            {% endfor %}
+        </ul>
+        <a class="btn btn-primary mt-4" href="{% url 'servicios_extra_create' %}">Crear Servicio Extra</a>
+    </div>
+    <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+</body>
+</html>

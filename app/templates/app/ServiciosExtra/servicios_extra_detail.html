@@ -1,0 +1,22 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ servicio_extra.nombre }}</title>
+    <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <h1 class="mt-5">{{ servicio_extra.nombre }}</h1>
+        <p>Wi-Fi: {{ servicio_extra.wifi }}</p>
+        <p>Reseñas:</p>
+        <p>{{ servicio_extra.reseñas }}</p>
+        <a class="btn btn-primary" href="{% url 'servicios_extra_update' servicio_extra.pk %}">Editar</a>
+        <a class="btn btn-danger" href="{% url 'servicios_extra_delete' servicio_extra.pk %}">Eliminar</a>
+    </div>
+    <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+</body>
+</html>

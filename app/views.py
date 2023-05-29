@@ -1,13 +1,15 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from .models import Clientes
+from .models import Clientes, Tour, ServiciosExtra
 from . import models, forms
-from .forms import ClientesForm
+from .forms import ClientesForm, TourForm, ServiciosExtraForm
 from django.contrib import messages
 from django.core.paginator import Paginator
 from django.http import Http404, HttpResponse
 from django.contrib.auth import authenticate, login
 from django.urls import reverse_lazy
 from django.contrib.auth.decorators import login_required, permission_required
+
+
 
 # Create your views here.
 #@permission_required('app.add_departamento')
@@ -194,3 +196,69 @@ def registro(request):
             
     return render(request, 'registration/registro.html', data)
 
+#/////////////////////////////////////////////////////////////////////////////////////////////////
+
+def tour_list(request):
+    tours = Tour.objects.all()
+    return render(request, 'app/Tour/tour_list.html', {'tours': tours})
+
+def tour_detail(request, pk):
+    tour = get_object_or_404(Tour, pk=pk)
+    return render(request, 'app/Tour/tour_detail.html',  {'tour': tour})
+
+def tour_new(request):
+    if request.method == "POST":
+        form = TourForm(request.POST)
+        if form.is_valid():
+            tour = form.save()
+            return redirect('tour_detail', pk=tour.pk)
+    else:
+        form = TourForm()
+    return render(request, 'app/Tour/tour_edit.html', {'form': form})
+
+def tour_edit(request, pk):
+    tour = get_object_or_404(Tour, pk=pk)
+    if request.method == "POST":
+        form = TourForm(request.POST, instance=tour)
+        if form.is_valid():
+            tour = form.save()
+            return redirect('tour_detail', pk=tour.pk)
+    else:
+        form = TourForm(instance=tour)
+    return render(request, 'app/Tour/tour_edit.html', {'form': form})
+
+#//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+def servicios_extra_list(request):
+    servicios_extra = ServiciosExtra.objects.all()
+    return render(request, 'app/ServiciosExtra/servicios_extra_list.html', {'servicios_extra': servicios_extra})
+
+def servicios_extra_detail(request, pk):
+    servicio_extra = get_object_or_404(ServiciosExtra, pk=pk)
+    return render(request, 'app/ServiciosExtra/servicios_extra_detail.html', {'servicio_extra': servicio_extra})
+
+def servicios_extra_create(request):
+    if request.method == 'POST':
+        form = ServiciosExtraForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('servicios_extra_list')
+    else:
+        form = ServiciosExtraForm()
+    return render(request, 'app/ServiciosExtra/servicios_extra_form.html', {'form': form})
+
+def servicios_extra_update(request, pk):
+    servicio_extra = get_object_or_404(ServiciosExtra, pk=pk)
+    if request.method == 'POST':
+        form = ServiciosExtraForm(request.POST, instance=servicio_extra)
+        if form.is_valid():
+            form.save()
+            return redirect('servicios_extra_list')
+    else:
+        form = ServiciosExtraForm(instance=servicio_extra)
+    return render(request, 'app/ServiciosExtra/servicios_extra_form.html', {'form': form})
+
+def servicios_extra_delete(request, pk):
+    servicio_extra = get_object_or_404(ServiciosExtra, pk=pk)
+    servicio_extra.delete()
+    return redirect('servicios_extra_list')

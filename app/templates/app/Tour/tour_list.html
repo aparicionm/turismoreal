@@ -1,0 +1,4 @@
+{% for tour in tours %}
+  <h2><a href="{% url 'tour_detail' pk=tour.pk %}">{{ tour.nombre }}</a></h2>
+  <p>{{ tour.descripcion }}</p>
+{% endfor %}

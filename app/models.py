@@ -62,3 +62,23 @@ class Contacto(models.Model):
 
     def __str__(self):
         return self.nombre
+
+
+
+class Tour(models.Model):
+    nombre = models.CharField(max_length=100)
+    descripcion = models.TextField()
+    # Otros campos relevantes
+    departamento = models.ForeignKey(Departamento, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.nombre
+
+
+class ServiciosExtra(models.Model):
+    nombre = models.CharField(max_length=100)
+    wifi = models.BooleanField(default=False)
+    reseñas = models.TextField(blank=True)
+
+    def __str__(self):
+        return self.nombre
