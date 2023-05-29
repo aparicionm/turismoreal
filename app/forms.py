@@ -7,6 +7,9 @@ from django.forms import ValidationError
 
 
 class ClientesForm(forms.ModelForm):
+    nombre_cliente = forms.CharField(widget=forms.TextInput(attrs={"class":"form-control mb-3"}))
+    rut_cliente = forms.CharField(widget=forms.TextInput(attrs={"class":"form-control mb-3"}))
+    email_cliente = forms.CharField(widget=forms.TextInput(attrs={"class":"form-control mb-3"}))
 
     class Meta:
         model = Clientes 

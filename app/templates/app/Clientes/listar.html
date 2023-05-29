@@ -1,48 +1,50 @@
 {% extends 'app/base.html' %}
 {% block contenido %}
-
 {% load humanize %} 
 <br><br>
 
-<div class="card">
-    <div class="card-body"> 
-        <h2>Listado Clientes</h2>
-        <hr>
-        <br>
-        <table class="table table-striped talbe-hover table-responsive-sm">  
-
-            <tr>
-                
-                <th>Nombre</th>
-                <th>Rut</th>
-                <th>Email</th>
-                <th>Opciones</th>
-                
-            </tr>   
-        
-              {% for p in cliente %}
-        
+<div class="container">
+    <div class="row">
+        <div class="col-6 text-center">
+            <h2>Listado Clientes</h2>
+        </div>
+        <div class="col-6">
+            <a href="{% url 'agregar_Clientes' %}" class="btn btn-success btn-sm">Agregar clientes</a>
+        </div>
+        <br><br><hr>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <div class="table-responsive">
+                <table class="table align-middle">
+                  <thead>
                     <tr>
-        
-                        <td>{{ p.nombre_cliente | title }}</td>
-                        <td>{{ p.rut_cliente | title }}</td>
-                        <td>{{ p.email_cliente | title }}</td>
-                        <td>
-                            <a href="{% url 'modificar_Clientes' p.id %}" class="btn btn-info">Modificar</a>
-                            <a href="{%  url 'eliminar_Clientes' p.id %}" class="btn btn-danger">Eliminar</a>
-                        </td>
-         
+                        <th>Nombre</th>
+                        <th>Rut</th>
+                        <th>Email</th>
+                        <th>Opciones</th>
                     </tr>
-        
-                   
-        
-        
-                {% endfor %}
-        
-        </table>
+                  </thead>
+                  
+                  <tbody>
+                    {% for p in cliente %}
+                    <tr>
+                        <td class="align-top">{{ p.nombre_cliente | title }}</td>
+                        <td class="align-top">{{ p.rut_cliente | title }}</td>
+                        <td class="align-top">{{ p.email_cliente | title }}</td>
+                        <td class="align-top"><a href="{% url 'modificar_Clientes' p.id %}" class="btn btn-info btn-sm">Modificar</a></td>
+                        <td class="align-top"><a href="{%  url 'eliminar_Clientes' p.id %}" class="btn btn-danger btn-sm">Eliminar</a></td>
+                    </tr>
+                    {% endfor %}
+                  </tbody>
+                </table>
+                <div>
+                    {% include 'app/paginator.html' %}
+                  </div>
+              </div>
+        </div>
     </div>
 </div>
-
 
 
 
