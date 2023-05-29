@@ -1,49 +1,62 @@
 {% extends 'app/base.html' %}
 {% block contenido %}
 <br><br>
-<div class="row">
-    <div class="col-12">
-        <div class="card">
-            <div class="card-body"></div>
+<div class="container">
+    <div class="row">
+        <div class="col-6 text-center">
             <h2>Listado de departamentos</h2>
-            <hr>
-            <table class="table table-striped table-hover table-responsive-sm">
-                <tr>
-                    <th>Nombre</th>
-                    <th>Dirección</th>
-                    <th>Descripción</th>
-                    <th>Valor diario</th>
-                    <th>Inventario</th>
-                    <th>Estado</th>
-                    <th>Imagen</th>
-                    <th>Opciones</th>
-                </tr>
-                {% for d in entity %}
-                <tr>
-                    <td>{{ d.nombre_dep }}</td>
-                    <td>{{ d.direccion_dep }}</td>
-                    <td>{{ d.descripcion_dep }}</td>
-                    <td>{{ d.valordiario_dep|floatformat:0 }}</td>
-                    <td>{{ d.inventario_dep }}</td>
-                    <td>{% if d.estado_dep %}
-                        Activo
-                        {% else %}
-                        No Activo
-                        {% endif %}
-                    </td>
-                    <td>{{ d.imagen_dep }}</td>
-                    <td>
-                        <a href="{% url 'modificar_departamento' d.id_dep %}" class="btn btn-info btn-sm">Modificar</a>&nbsp;
-                        <a href="{% url 'estado_departamento' d.id_dep %}" class="btn btn-danger btn-sm">Cambiar estado</a>
-                    </td>
-                </tr>
-                {% endfor %}
-            </table>
-            <div>
-                {% include 'app/paginator.html' %}
-            </div>
+        </div>
+        <div class="col-6">
+            <a href="{% url 'agregar_departamento' %}" class="btn btn-success btn-sm">Agregar departamento</a>
+        </div>
+        <br><br><hr>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <div class="table-responsive">
+                <table class="table align-middle">
+                  <thead>
+                    <tr>
+                        <th>Nombre</th>
+                        <th>Dirección</th>
+                        <th>Descripción</th>
+                        <th>Valor diario</th>
+                        <th>Inventario</th>
+                        <th>Estado</th>
+                        <th>Modificar</th>
+                        <th>Alternar</th>
+                    </tr>
+                  </thead>
+                  
+                  <tbody>
+                    {% for d in entity %}
+                    <tr>
+                        <td class="align-top">{{ d.nombre_dep }}</td>
+                        <td class="align-top">{{ d.direccion_dep }}</td>
+                        <td class="align-top">{{ d.descripcion_dep }}</td>
+                        <td class="align-top">{{ d.valordiario_dep|floatformat:0 }}</td>
+                        <td class="align-top">{{ d.inventario_dep }}</td>
+                        <td class="align-top">{% if d.estado_dep %}
+                            Activo
+                            {% else %}
+                            No Activo
+                            {% endif %}
+                        </td>
+                        <td class="align-top">{{ d.inventario_dep }}</td>
+                        <td class="align-top"><a href="{% url 'modificar_departamento' d.id_dep %}" class="btn btn-info btn-sm">Modificar</a></td>
+                        <td class="align-top"><a href="{% url 'estado_departamento' d.id_dep %}" class="btn btn-danger btn-sm">Alternar</a></td>
+                    </tr>
+                    {% endfor %}
+                  </tbody>
+                </table>
+                <div>
+                    {% include 'app/paginator.html' %}
+                  </div>
+              </div>
         </div>
     </div>
 </div>
-<br><br>
+
+
+
 {% endblock %}

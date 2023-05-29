@@ -42,9 +42,6 @@ def contacto (request):
             data["form"] = formulario
     return render(request, 'app/contacto.html', data)
 
-def galeria (request):
-    return render(request, 'app/galeria.html')
-
 #Departamento
 def agregar_departamento(request):
     data = {

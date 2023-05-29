@@ -1,5 +1,6 @@
 {% extends 'app/base.html' %}
 {% block contenido %}
+
 {% load humanize %} 
 <br><br>
 
@@ -27,7 +28,7 @@
                         <td>{{ p.rut_cliente | title }}</td>
                         <td>{{ p.email_cliente | title }}</td>
                         <td>
-                            <a href="{%url 'modificar_Clientes' p.id %}" class="btn btn-info">Modificar</a>
+                            <a href="{% url 'modificar_Clientes' p.id %}" class="btn btn-info">Modificar</a>
                             <a href="{%  url 'eliminar_Clientes' p.id %}" class="btn btn-danger">Eliminar</a>
                         </td>
          
