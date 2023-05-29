@@ -3,84 +3,112 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tecnomarket</title>
+    <title>TurismoReal</title>
     <link href="https://fonts.googleapis.com/css2?family=Balsamiq+Sans:ital,wght@0,700;1,400;1,700&family=Open+Sans:ital,wght@0,400;0,700;1,600&display=swap" rel="stylesheet">
-    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     {% load static %}
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
     {% block css %}
     {% endblock %} 
-    <link rel="stylesheet" href="{% static 'app/css/estilos.css' %}">
+    
     
 </head>
 <body>
-
-    
-    <header id="header">
-        <img class="menu" src="{% static 'app/img/menuiconwhite.png' %}" alt="menu" id="menu">
-        <div class="contenedor_logo">
-            <img  class="logo"  src="{% static 'app/img/tecnomarketpngicono.png' %}" alt="logo">
+    <header>
+        <div class="px-3 py-2 bg-dark text-white">
+          <div class="container">
+            <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
+              <a href="/" class="d-flex align-items-center my-2 my-lg-0 me-lg-auto text-white text-decoration-none">
+                <img src="{% static 'app/img/logo.png' %}" alt="Logo" width="80%" height="80%" class="me-2">
+              </a>
+              <ul class="nav col-12 col-lg-auto my-2 justify-content-center my-md-0 text-small">
+                <li>
+                  <a href="{% url 'home' %}" class="nav-link text-secondary">
+                    <svg class="bi d-block mx-auto mb-1" width="24" height="24"><use xlink:href=""/></svg>
+                    Inicio
+                  </a>
+                </li>
+                <li>
+                  <a href="{% url 'contacto' %}" class="nav-link text-white">
+                    <svg class="bi d-block mx-auto mb-1" width="24" height="24"><use xlink:href=""/></svg>
+                    Contacto
+                  </a>
+                </li>
+                <li>
+                  <a href="#" class="nav-link text-white">
+                    <svg class="bi d-block mx-auto mb-1" width="24" height="24"><use xlink:href="#table"/></svg>
+                    Orders
+                  </a>
+                </li>
+                <li>
+                  <a href="#" class="nav-link text-white">
+                    <svg class="bi d-block mx-auto mb-1" width="24" height="24"><use xlink:href="#grid"/></svg>
+                    Products
+                  </a>
+                </li>
+                <li>
+                  <a href="#" class="nav-link text-white">
+                    <svg class="bi d-block mx-auto mb-1" width="24" height="24"><use xlink:href="#people-circle"/></svg>
+                    Customers
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </div>
         </div>
-
-        <div>
-            
-            <nav id="nav">
-                <ul>
-                    <li>
-                        <a href="{% url 'home' %}"> Inicio </a>
-                    </li>
-                    <li>
-                        <a href="{% url 'contacto' %}">Contacto</a>
-                    </li>
-                    <li><a href="{% url 'galeria' %}">Galería</a></li>
-                    <li>
-                        <a href="{%   url 'agregar_Clientes' %}">Agregar Clientes </a>
-                    </li>
-                    <li>
-                        <a href="{%   url 'listar_Clientes' %}">Listar Clientes </a>
-                    </li> 
-                    <li>
-                        <a href="{%   url 'agregar_departamento' %}">Agregar departamento</a>
-                    </li> 
-                    <li>
-                        <a href="{%   url 'listar_departamento' %}">Listar departamento</a>
-                    </li> 
-                    {% if user.is_authenticated %}
-                    <li>
-                        <a href="{%   url 'logout' %}">Cerrar sesión</a>
-                    </li>
-                    <li>
-                        <a href="#">@{{ user.username }}</a>
-                    </li>
-                    {% else %}
-                    <li>
-                        <a href="{%   url 'login' %}">Iniciar sesión</a>
-                    </li>
-                    {% endif %}
-                </ul>
-            </nav>
-
+        <div class="px-3 py-2 border-bottom mb-3">
+          <div class="container d-flex flex-wrap justify-content-center">
+            <form class="col-12 col-lg-auto mb-2 mb-lg-0 me-lg-auto">
+                <!-- buscador de departamentos -->
+            </form>
+            <div class="float-end">
+                {% if user.is_authenticated %}
+                <a type="button" class="btn btn-light text-dark me-2"> @{{ user.username }}</a>
+                <a type="button" href="{%   url 'logout' %}" class="btn btn-primary">Cerrar sesión</a>
+                {% else %}
+                <a type="button" href="{%   url 'login' %}" class="btn btn-light text-dark me-2">Iniciar sesión</a>
+                <a type="button" href="{%   url 'registro' %}" class="btn btn-primary">Registrarse</a>
+                {% endif %}
+            </div>
+          </div>
         </div>
-
     </header>
-
+            
     <div id="contenido">
         {% block contenido %}
         {% endblock %}
     </div>
 
+    <footer class="bg-light text-white bg-dark">
+        <div class="container text-center">
+            <br>
+            <div class="row">
+                <div class="col-12">
+                    <h5 class="mb-4 font-weight-bold text-primary">
+                    Contacto
+                    </h5>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <p>
+                        <li class="col fas fa-home me-3"> Santiago, Chile</li>
+                    </p>
+                </div>
 
-    <footer>
-        <div class="marcas">
-            <img src="{% static 'app/img/footer/apple.png' %}" alt="apple">
-            <img src="{% static 'app/img/footer/lenovo.png' %}" alt="lenovo">
-            <img src="{% static 'app/img/footer/microsoft.png' %}" alt="microsoft">
-            <img src="{% static 'app/img/footer/samsung.png' %}" alt="samsung">
-            <img src="{% static 'app/img/footer/xiaomi.png' %}" alt="xiaomi">
-        </div>
-        <div class="logo_footer">
-            <img src="{% static 'app/img/tecnomarketpngicono.png' %}" alt="logo">
-        </div>
+                <div class="col">
+                    <p>
+                        <li class="col fas fa-envelope me-3"> turismoreal@gmail.com</li>
+                    </p>
+                </div>
+
+                <div class="col">
+                    <p>
+                        <li class="col fas fa-phone me-3"> +569 42562345</li>
+                    </p>
+                </div>
+            </div>
+      </div>
     </footer>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>

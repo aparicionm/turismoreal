@@ -1,0 +1,15 @@
+{% extends 'app/base.html' %}
+{% block contenido %}
+{% for d in entity %}
+<a href="">
+{{ d.nombre_dep }}
+{{ d.direccion_dep }}
+{{ d.descripcion_dep }}
+{{ d.valordiario_dep|floatformat:0 }}
+{{ d.inventario_dep }}
+{{ d.imagen_dep }}
+</a>
+
+{% endfor %}
+
+{% endblock %}

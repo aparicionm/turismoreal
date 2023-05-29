@@ -10,13 +10,31 @@ from django.contrib.auth.decorators import login_required, permission_required
 
 # Create your views here.
 #@permission_required('app.add_departamento')
+
+#Listar departamentos para reservar
+def home(request):
+    departamentos = models.Departamento.objects.filter(estado_dep=True)
+    page = request.GET.get('page', 1)
+    
+    try:
+        paginator = Paginator(departamentos, 100)
+        departamentos = paginator.page(page)
+    except: 
+        raise Http404
+    
+    data = {
+        'entity': departamentos,
+        'paginator': paginator
+    }
+    return render(request, 'app/home.html', data)
+'''
 def home (request):
     departamentos = models.Departamento.objects.all()
     data = {
         'departamentos': departamentos
     }
     return render(request, 'app/home.html', data)
-
+'''
 def contacto (request):
     data = {
         'form': forms.ContactoForm()
@@ -78,6 +96,7 @@ def modificar_departamento(request, id):
         data["form"] = formulario
     return render(request, 'app/Departamento/modificar.html', data)
 
+
 def estado_departamento(request, id):
     departamento = get_object_or_404(models.Departamento, id_dep=id)
     if departamento.estado_dep:
@@ -88,6 +107,39 @@ def estado_departamento(request, id):
         messages.success(request, "Departamento activado")
     departamento.save()
     return redirect(to='listar_departamento') 
+
+#Reservar departamentos
+
+'''
+def ListadoDepartamentos(request):
+    model = models.Departamento
+    template_name = 'app/Departamento/listado_departamentos.html'
+
+    def get_queryset(self):
+        queryset = self.model.objects.filter(estado_departamento = True)
+        return render(request, queryset)
+
+
+def DetalleDepartamento(request):
+    model = models.Departamento
+    template = 'app/Departamento/detalle_departamento.html'
+
+    def get_objects(self):
+        try:
+            instance = self.model.objects.get(id_dep = self.kwargs['id'])
+        except expression as identifier:
+            pass
+
+        return instance
+    
+    def get_context_data(self, **kwargs):
+        context = {}
+        context['object'] = self.get_object()
+        return context
+    
+    def get(self,request,*args,**kwargs):
+        return render(request,self.template_name,self.get_context_data())
+'''
 
 #Cliente
 def agregar_Clientes(request):

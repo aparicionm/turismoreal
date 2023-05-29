@@ -1,5 +1,6 @@
 {% extends 'app/base.html' %}
 {% load static %}
+
 {% block js %}
 {% load bootstrap5 %}
 {% bootstrap_css %}
@@ -20,43 +21,37 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/bxslider/4.2.12/jquery.bxslider.css">
 {% endblock %}
 {% block contenido %}
-
-<div class="slider">
-    <div>
-        <img src="{% static 'app/img/banner/banner1.png' %}" alt="">
-    </div>
-    <div>
-        <img src="{% static 'app/img/banner/banner2.png' %}" alt="">
-    </div>
-    <div>
-        <img src="{% static 'app/img/banner/banner3.png' %}" alt="">
-    </div>
-</div>
 {% load humanize %}
-<h2>Departamentos</h2>
-<div class="productos">
-    {% for d in departamentos %}
 
-    <div class="producto">
-
-        <div class="contenedor_producto">
-            {% if d.imagen %}
-            <img src="{{ d.imagen.url }}" alt="imagen producto">
-            {% else %}
-            <img src="{% static 'app/img/else.jpeg' %}" alt="imagen producto">
-            {% endif %}
-            <div class="detalle">
-                <h5>{{ d.direccion_dep }} </h5>
-                <h2>{{ d.nombre_dep }}</h2>
-                <h3>{{ d.valordiario_dep|floatformat:0 }} CLP</h3>
-                <p>{{ d.descripcion_dep }}</p>
+<div class="container" style="font-family:sans-serif">
+    <h1>Reserva departamentos </h1>
+    <hr class="col-12">
+    <div class="row align-items-start">
+        {% for d in entity %}
+            <div class="col-lg-4 col-md-6">
+                <a href="" class="text-decoration-none">
+                    <div class="card shadow">
+                        <div class="card-body">
+                            {% if d.imagen %}
+                            <img src="{{ d.imagen.url }}" alt="imagen producto" style="width: 100%; height: auto;">
+                            {% else %}
+                            <img src="{% static 'app/img/else.jpeg' %}" alt="imagen producto" style="width: 100%; height: auto;">
+                            {% endif %}
+                            <hr>
+                            <div>
+                                <h5>{{ d.direccion_dep }} </h5>
+                                <h2>{{ d.nombre_dep }}</h2>
+                                <h3>{{ d.valordiario_dep|floatformat:0 }} CLP</h3>
+                                <p>{{ d.descripcion_dep }}</p>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+                <br>
             </div>
-
-        </div>
-
+        {% endfor %}
+        <br>
     </div>
-    {% endfor %}
-
 </div>
 
 {% endblock %}
