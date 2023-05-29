@@ -12,7 +12,7 @@ class Departamento(models.Model):
     #Inventario pk 
     #Mantención pk 
     inventario_dep = models.TextField()
-    estado_dep = models.BooleanField()
+    estado_dep = models.BooleanField(default=True)
     imagen = models.ImageField(upload_to="departamentos", null=True)
     def __str__(self):
         return self.nombre_dep
