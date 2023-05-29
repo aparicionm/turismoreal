@@ -16,6 +16,7 @@ urlpatterns = [
     path('estado-departamento/<id>/', views.estado_departamento, name="estado_departamento"),
     path('registro/', views.registro, name="registro"),
     #path('listado-departamento', views.listado_departamento, name='listado_departamentos'),
-    #path('detalle-departamento/<id>/', views.DetalleDepartamento, name='detalle_departamento')
+    path('detalle-departamento/<id>/', views.detalle_departamento, name='detalle_departamento'),
+    path('agregarReserva/', views.agregar_reserva,name='agregarReserva')
 
 ]

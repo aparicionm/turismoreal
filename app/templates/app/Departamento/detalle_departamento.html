@@ -1,0 +1,48 @@
+
+{% extends 'app/base.html' %}
+{% block contenido %}
+<br>
+<div class="row ">
+    <div class="col-12 col-md-6 offset-md-3">
+        <div class="card">
+            <div class="card-body">
+                <h2>{{ departamento.nombre_dep }}</h2>
+                <hr>
+                <img src="{{ departamento.imagen.url }}" alt="imagen" style="width: 100%; height: auto;">
+                <hr>
+                <h5>{{ departamento.direccion_dep }} </h5>
+                <h3>{{ departamento.valordiario_dep|floatformat:0 }} CLP POR DIA</h3>
+                <p>{{ departamento.descripcion_dep }}</p>
+                <div class="col-md-6">
+                    <button type="button" class="btn btn-primary btn-lg" onclick="registrarReserva();"> Reservar</button>
+                </div>
+            </div>
+        </div>    
+    </div>
+</div>
+<br><br>
+{% block extrajs %}
+<script type="text/javascript">
+    function registrarReserva(){
+        data = {
+            'Departamento':"{{ departamento.id_dep}}",
+            csrfmiddlewaretoken: $("[name='csrfmiddlewaretoken']").val()
+        }
+        $.ajax({
+            data: data,
+            url:"{% url 'agregarReserva' %}",
+            type: 'POST',
+            success:function(response){
+                console.log("funciono")
+                NotificationSuccess(response.mensaje);
+            },
+            error:function(error){
+                console.log("no funciono")
+            }
+        })
+
+    }
+</script>
+{% endblock extrajs %}
+{% endblock %}
+

@@ -16,6 +16,11 @@ class Departamento(models.Model):
     imagen = models.ImageField(upload_to="departamentos", null=True)
     def __str__(self):
         return self.nombre_dep
+    
+class ImagenDepartamento(models.Model):
+    imagen = models.ImageField(upload_to="departamentos")
+    departamento = models.ForeignKey(Departamento, on_delete=models.CASCADE, related_name="imagenes")
+
 
 class Reserva(models.Model):
     id_reserva = models.AutoField(primary_key=True)
