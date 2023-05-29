@@ -27,6 +27,7 @@ def home(request):
         'paginator': paginator
     }
     return render(request, 'app/home.html', data)
+#fabi bug
 '''
 def home (request):
     departamentos = models.Departamento.objects.all()
