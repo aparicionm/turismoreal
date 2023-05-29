@@ -1,6 +1,6 @@
 from django import forms
-from .models import  Clientes
-from . import models
+from .models import  Clientes, Tour, ServiciosExtra 
+from . import models 
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from django.forms import ValidationError
@@ -64,3 +64,13 @@ class DepartamentoForm(forms.ModelForm):
         exclude = ['estado_dep'] 
         #fields = ["nombre_dep","direccion_dep","descripcion_dep","valordiario_dep","inventario_dep","imagen"]
 
+class TourForm(forms.ModelForm):
+    class Meta:
+        model = Tour
+        fields = ('nombre', 'descripcion', 'departamento')
+
+
+class ServiciosExtraForm(forms.ModelForm):
+    class Meta:
+        model = ServiciosExtra
+        fields = '__all__'

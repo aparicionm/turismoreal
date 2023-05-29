@@ -1,6 +1,14 @@
 from django.urls import path
 from . import views
+
 from .views import home, contacto, galeria, agregar_Clientes, listar_Clientes, modificar_Clientes, eliminar_Clientes
+from .views import (
+    servicios_extra_list,
+    servicios_extra_detail,
+    servicios_extra_create,
+    servicios_extra_update,
+    servicios_extra_delete,
+)
 
 urlpatterns = [
     path('', views.home, name="home"),
@@ -17,5 +25,14 @@ urlpatterns = [
     path('registro/', views.registro, name="registro"),
     #path('listado-departamento', views.listado_departamento, name='listado_departamentos'),
     #path('detalle-departamento/<id>/', views.DetalleDepartamento, name='detalle_departamento')
-
+    path('tours/', views.tour_list, name='tour_list'),
+    path('tour/<int:pk>/', views.tour_detail, name='tour_detail'),
+    path('tour/new/', views.tour_new, name='tour_new'),
+    path('tour/<int:pk>/edit/', views.tour_edit, name='tour_edit'),
+    path('servicios_extra/', servicios_extra_list, name='servicios_extra_list'),
+    path('servicios_extra/<int:pk>/', servicios_extra_detail, name='servicios_extra_detail'),
+    path('servicios_extra/create/', servicios_extra_create, name='servicios_extra_create'),
+    path('servicios_extra/<int:pk>/update/', servicios_extra_update, name='servicios_extra_update'),
+    path('servicios_extra/<int:pk>/delete/', servicios_extra_delete, name='servicios_extra_delete'),
 ]
+
