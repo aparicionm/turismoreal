@@ -17,5 +17,6 @@ urlpatterns = [
     #path('listado-departamento', views.listado_departamento, name='listado_departamentos'),
     path('detalle-departamento/<id>/', views.detalle_departamento, name='detalle_departamento'),
     path('agregarReserva/', views.agregar_reserva,name='agregarReserva'),
+    
 
 ]
