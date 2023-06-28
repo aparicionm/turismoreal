@@ -1,0 +1,46 @@
+{% extends 'app/base.html' %}
+{% block contenido %}
+<br><br>
+<div class="container">
+    <div class="row">
+        <div class="col-6 text-center">
+            <h2>Tus reservas</h2>
+        </div><hr>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <div class="table-responsive">
+                <table class="table align-middle">
+                  <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Departamento</th>
+                        <th>Días</th>
+                        <th>Fecha de inicio</th>
+                        <th>Check-In</th>
+                    </tr>
+                  </thead>
+                  
+                  <tbody>
+                    {% for r in entity %}
+                    <tr>
+                        <td class="align-top">{{ r.id_reserva }}</td>
+                        <td class="align-top">{{ r.departamento }}</td>
+                        <td class="align-top">{{ r.cant_dias }}</td>
+                        <td class="align-top">{{ r.fecha_creacion }}</td>
+                        <td class="align-top"><a href="{% url 'checkin' r.id_reserva %}" class="btn btn-info btn-sm">Check In</a></td>
+                    </tr>
+                    {% endfor %}
+                  </tbody>
+                </table>
+                <div>
+                    {% include 'app/paginator.html' %}
+                  </div>
+              </div>
+        </div>
+    </div>
+</div>
+
+
+
+{% endblock %}

@@ -1,27 +1,27 @@
-{% extends 'app/base.html' %} 
-
+{% extends 'app/base.html' %}
 {% block contenido %}
 {% load static %}
+    <link rel="stylesheet" href="{% static 'app/css/login.css' %}">
 <br><br>
 <div class="row">
     <div class="col-12 col-md-6 offset-md-3">
         <div class="card">
             <div class="card-body">
-                <h2>Contáctenos</h2>
+                <h2>Registrarse</h2>
                 <hr>
-                <form action="" class="" method="post">
+        
+                <form action="" method="POST" enctype="multipart/form-data">
                     {% csrf_token %}
                     {{ form }}
-                    <br>
                     <div class="d-flex justify-content-end">
                         <a href="{% url 'home' %}" class="btn btn-warning">Volver</a>&nbsp;
-                        <button type="submit" id="btnEnviar" class="btn btn-primary">Enviar</button>
+                        <input type="submit" value="Guardar" class="btn btn-primary">
                     </div>
+                    {{ mensaje }}
                 </form>
             </div>
-        </div>
+        </div>    
     </div>
 </div>
 <br><br>
-
 {% endblock %}

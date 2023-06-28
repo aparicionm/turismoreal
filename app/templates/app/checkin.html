@@ -1,0 +1,28 @@
+{% extends 'app/base.html' %}
+{% block contenido %}
+{% load static %}
+<!-- Bootstrap CSS -->
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+<!-- jQuery -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+
+<!-- Bootstrap JS -->
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<br>
+<div class="row">
+    <div class="col-12 col-md-6 offset-md-3">
+        <div class="card">
+            <div class="card-body">
+                <hr>
+                <form method="POST">
+                    {% csrf_token %}
+                    {{ form.as_p }}
+                    <a href="{% url 'listar_reservas' %}" class="btn btn-primary justify-content-center">Volver</a>
+                </form>
+            </div>
+        </div>    
+    </div>
+</div>
+<br><br>
+{% endblock %}

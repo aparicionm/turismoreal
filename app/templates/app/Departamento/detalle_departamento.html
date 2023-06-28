@@ -1,16 +1,54 @@
-
 {% extends 'app/base.html' %}
 {% block contenido %}
+{% load static %}
+<!-- Bootstrap CSS -->
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+<!-- jQuery -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+
+<!-- Bootstrap JS -->
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
 <br>
 <div class="row ">
     <div class="col-12 col-md-6 offset-md-3">
         <div class="card">
+            {% csrf_token %}
             <div class="card-body">
                 <h2>{{ departamento.nombre_dep }}</h2>
                 <hr>
-                <img src="{{ departamento.imagen.url }}" alt="imagen" style="width: 100%; height: auto;">
+                <div class="row">
+                    {% for imagen in departamento.imagenes.all %}
+                    <div class="col-md-4">
+                        <a href="#" class="open-modal" data-image="{{ imagen.imagen.url }}">
+                            <img src="{{ imagen.imagen.url }}" alt="imagen" class="img-fluid mb-3">
+                        </a>
+                    </div>
+                    {% endfor %}
+                    <!-- Modal -->
+                    <div class="modal fade" id="imageModal" tabindex="-1" role="dialog" aria-labelledby="imageModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                            <div class="modal-body">
+                            <img src="" alt="imagen" class="img-fluid modal-image">
+                            </div>
+                        </div>
+                        </div>
+                    </div>
+                </div>
+                <script>
+                    $(document).ready(function() {
+                      $('.open-modal').click(function(e) {
+                        e.preventDefault();
+                        var imageUrl = $(this).data('image');
+                        $('.modal-image').attr('src', imageUrl);
+                        $('#imageModal').modal('show');
+                      });
+                    });
+                </script>
                 <hr>
-                <h5>{{ departamento.direccion_dep }} </h5>
+                <h5>{{ departamento.direccion_dep }}</h5>
                 <h3>{{ departamento.valordiario_dep|floatformat:0 }} CLP POR DIA</h3>
                 <p>{{ departamento.descripcion_dep }}</p>
                 <div class="col-md-6">
@@ -23,25 +61,29 @@
 <br><br>
 {% block extrajs %}
 <script type="text/javascript">
-    function registrarReserva(){
-        data = {
-            'Departamento':"{{ departamento.id_dep}}",
-            csrfmiddlewaretoken: $("[name='csrfmiddlewaretoken']").val()
-        }
+    function registrarReserva() {
+        var data = {
+            'usuario': "{{ request.user.id }}",
+            'departamento': "{{ departamento.id_dep }}",
+            'avance': "{{ departamento.valordiario_dep }}",
+            'csrfmiddlewaretoken': $("[name='csrfmiddlewaretoken']").val()
+        };
+
         $.ajax({
             data: data,
-            url:"{% url 'agregarReserva' %}",
+            url: "{% url 'reservar_departamento' %}",
             type: 'POST',
-            success:function(response){
-                console.log("funciono")
-                NotificationSuccess(response.mensaje);
+            success: function(response) {
+                console.log("funciono");
+                window.location.href = response.url;
+                console.log("Avance:", data.avance);
             },
-            error:function(error){
-                console.log("no funciono")
+            error: function(error) {
+                console.log("Avance:", data.avance);
+                console.log("no funciono");
             }
-        })
-
-    }
+        });
+        }
 </script>
 {% endblock extrajs %}
 {% endblock %}

@@ -44,3 +44,13 @@ textarea::placeholder {
 a {
     text-decoration: none;
   }
+
+
+.body{
+  background-image: url('../img/maleta.jpg');
+  min-height: 100vh;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-attachment: fixed;
+  background-size: cover;
+}

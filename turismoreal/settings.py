@@ -50,6 +50,7 @@ INSTALLED_APPS = [
 
 
 MIDDLEWARE = [
+    'app.middleware.ReservaMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -116,6 +117,13 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+
+AUTH_USER_MODEL = 'app.Usuario'
+
+LANGUAGES = [
+    ('en', 'English'),
+    ('es', 'Español'),
+]
 
 # Internationalization
 # https://docs.djangoproject.com/en/3.2/topics/i18n/

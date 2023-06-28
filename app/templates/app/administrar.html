@@ -1,0 +1,51 @@
+{% extends 'app/base.html' %}
+{% block contenido %}
+{% load static %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'app/css/bg.css' %}">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/bxslider/4.2.12/jquery.bxslider.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Balsamiq+Sans:ital,wght@0,700;1,400;1,700&family=Open+Sans:ital,wght@0,400;0,700;1,600&display=swap" rel="stylesheet">
+
+<div class="container">
+  <h1 class="text-center font-italic">Bienvenido {{ user.nombre}}</h1><br>
+  <div class="row">
+    <div class="col-md-4">
+      <div class="card text-center">
+        <div class="card-body">
+          <h5 class="card-title">Departamentos</h5>
+          <p class="card-text">Listado de departamentos</p>
+          <a href="{% url 'listar_departamento' %}" class="btn btn-primary btn-sm">Gestionar</a>
+        </div>
+      </div>
+    </div><br><br><br><br><br><br>
+    <div class="col-md-4">
+      <div class="card text-center">
+        <div class="card-body">
+          <h5 class="card-title">Usuarios</h5>
+          <p class="card-text">Listado de usuarios</p>
+          <a href="{% url 'listar_usuario' %}" class="btn btn-primary btn-sm">Gestionar</a>
+        </div>
+      </div>
+    </div><br><br><br><br><br><br>
+    <div class="col-md-4">
+      <div class="card text-center">
+        <div class="card-body">
+          <h5 class="card-title">Servicios extra</h5>
+          <p class="card-text">Listado de servicios extra</p>
+          <a href="{% url 'servicios_extra_list' %}" class="btn btn-primary btn-sm">Gestionar</a>
+        </div>
+      </div>
+    </div><br><br><br><br><br><br>
+    <div class="col-md-4">
+      <div class="card text-center">
+        <div class="card-body">
+          <h5 class="card-title">Tours</h5>
+          <p class="card-text">Listado de tours</p>
+          <a href="{% url 'tour_list' %}" class="btn btn-primary btn-sm">Gestionar</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

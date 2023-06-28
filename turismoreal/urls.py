@@ -16,12 +16,16 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
+from django.contrib.auth.decorators import login_required
 from django.conf.urls.static import static
+from app import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('app.urls')),
-    path('accounts/', include('django.contrib.auth.urls')),
+    path('accounts/login/', views.Login.as_view(), name='login'),
+    path('logout/', login_required(views.logoutUsuario), name='logout'),
+    path('cambiar-idioma/<str:idioma>/', views.cambiar_idioma, name='cambiar_idioma'),
 ]
 
 if settings.DEBUG:

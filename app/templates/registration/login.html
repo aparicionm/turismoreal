@@ -9,17 +9,22 @@
     <link rel="stylesheet" href="{% static 'app/css/login.css' %}">
     <title>Ingreso al sistema</title>
 </head>
-<body>
+<body class="body">
     <br><br><br>
     <div class="container">
         <div class="row">
             <div class="col-12 col-md-6 offset-md-3">
                 <div class="card">
                     <div class="card-body">
-                        <h2>Ingresa tus credenciles</h2>
+                        <h2>Ingresa tus credenciales</h2>
                         <hr>   
                         <form action="" method="POST">
                             {% csrf_token %}
+                            {% if form.non_fields.errors %}
+                            <div class="alert alert-danger alert-dismissible" role="alert">
+                                {{ form.non_fields_errors }}
+                            </div>
+                            {% endif %}
                             <div class="mb-3">
                                 <label for="username" class="form-label">Nombre de usuario</label>
                                 {{ form.username }}
@@ -29,7 +34,7 @@
                                 {{ form.password }}
                             </div>
                             <a href="{% url 'home' %}">Volver a inicio</a> |
-                            <a href="{% url 'registro' %}">Registrarse</a>
+                            <a href="{% url 'registrar_usuario' %}">Registrarse</a>
                             <input type="submit" value="Ingresar" class="btn btn-success float-end">
                         </form>
                     </div>

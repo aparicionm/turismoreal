@@ -1,21 +1,137 @@
+from typing import Any
+from django import http
+from django.conf import settings
+from django.db.models.query import QuerySet
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import Clientes, Tour, ServiciosExtra
 from . import models, forms
 from .forms import ClientesForm, TourForm, ServiciosExtraForm
+from django.views.generic.edit import FormView
+from django.utils.decorators import method_decorator
+from django.views.decorators.cache import never_cache
+from django.views.decorators.csrf import csrf_protect
 from django.contrib import messages
 from django.core.paginator import Paginator
-from django.http import Http404, HttpResponse
-from django.contrib.auth import authenticate, login
+from django.http import Http404, HttpResponse, HttpResponseRedirect
+from django.contrib.auth import authenticate, login, logout
 from django.urls import reverse_lazy
+from django.views.generic import CreateView, ListView,UpdateView,DeleteView ,View
 from django.contrib.auth.decorators import login_required, permission_required
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
 
 
 
 # Create your views here.
 #@permission_required('app.add_departamento')
 
+#Idiomas
+def cambiar_idioma(request, idioma):
+    if idioma in dict(settings.LANGUAGES):
+        request.session['django_language'] = idioma
+    return redirect(request.META.get('HTTP_REFERER', '/'))
+
+
+#Usuarios
+class Login(FormView):
+    template_name = 'registration/login.html'
+    form_class = forms.FormularioLogin
+    success_url = reverse_lazy('home')
+
+    @method_decorator(csrf_protect)
+    @method_decorator(never_cache)
+    def dispatch(self,request,*args,**kwargs):
+        if request.user.is_authenticated:
+            return HttpResponseRedirect(self.get_success_url())
+        else:
+            return super(Login,self).dispatch(request,*args,**kwargs)
+    
+    def form_valid(self, form):
+        login(self.request,form.get_user())
+        return super(Login,self).form_valid(form)
+    
+def logoutUsuario(request):
+    logout(request)
+    return HttpResponseRedirect('/accounts/login/')
+
+class ListadoUsuarios(ListView):
+    model = models.Usuario
+    template_name = 'registration/listar_usuario.html'
+
+    def get_queryset(self):
+        return self.model.objects.filter(usuario_activo = True,usuario_administrativo=True)
+    
+class RegistrarUsuario(CreateView):
+    model = models.Usuario
+    form_class = forms.FormularioUsuario
+    template_name = 'registration/crear_usuario.html'
+    success_url = reverse_lazy('home')
+
+    def post(self,request,*args,**kwargs):
+        form = self.form_class(request.POST)
+        if form.is_valid():
+            nuevo_usuario = models.Usuario(
+                email = form.cleaned_data.get('email'),
+                username = form.cleaned_data.get('username'),
+                nombre = form.cleaned_data.get('nombre'),
+                apellidos = form.cleaned_data.get('apellidos'),
+            )
+            nuevo_usuario.set_password(form.cleaned_data.get('password1'))
+            nuevo_usuario.save()
+            login(self.request, nuevo_usuario)
+            return redirect('home')
+        else: 
+            return render(request,self.template_name,{'form':form})
+
+class RegistrarAdmin(CreateView):
+    model = models.UsuarioManager
+    form_class = forms.FormularioUsuario
+    template_name = 'registration/crear_admin.html'
+    success_url = reverse_lazy('login')
+
+    def post(self,request,*args,**kwargs):
+        form = self.form_class(request.POST)
+        if form.is_valid():
+            nuevo_usuario = models.Usuario(
+                email = form.cleaned_data.get('email'),
+                username = form.cleaned_data.get('username'),
+                nombre = form.cleaned_data.get('nombre'),
+                apellidos = form.cleaned_data.get('apellidos'),
+                usuario_administrativo = True 
+            )
+            nuevo_usuario.set_password(form.cleaned_data.get('password1'))
+            nuevo_usuario.save()
+            login(self.request, nuevo_usuario)
+            return redirect('home')
+        else: 
+            return render(request,self.template_name,{'form':form})
+
+
+# def estado_usuario(request, id):
+#     usuario = get_object_or_404(models.Usuario, id=id)
+#     if usuario.usuario_activo:
+#         usuario.usuario_activo = False
+#         messages.success(request, "Usuario eliminado")
+#     else:
+#         usuario.usuario_activo = True
+#         messages.success(request, "Departamento activado")
+#     usuario.usuario_activo.save()
+#     return redirect(to='listar_cliente')
+
+# def estado_admin(request, id):
+#     usuario = get_object_or_404(models.UsuarioManager, id=id)
+#     if usuario.usuario_activo:
+#         usuario.usuario_activo = False
+#         messages.success(request, "Usuario eliminado")
+#     else:
+#         usuario.usuario_activo = True
+#         messages.success(request, "Usuario activado")
+#     usuario.usuario_activo.save()
+#     return redirect(to='listar_usuario') 
+
 #Listar departamentos para reservar
 def home(request):
+    print(request.GET)
     departamentos = models.Departamento.objects.filter(estado_dep=True)
     page = request.GET.get('page', 1)
     
@@ -30,6 +146,9 @@ def home(request):
         'paginator': paginator
     }
     return render(request, 'app/home.html', data)
+
+def administrar(request):
+    return render(request, 'app/administrar.html') 
 
 def contacto (request):
     data = {
@@ -104,20 +223,99 @@ def estado_departamento(request, id):
 #Reservar departamentos
 def detalle_departamento(request, id):
     departamento = get_object_or_404(models.Departamento, id_dep=id)
-    data = {
-        'departamento': departamento
-    }
-    return render(request, 'app/Departamento/detalle_departamento.html', data)
 
-def agregar_reserva(request):
+    if departamento.estado_dep == True:
+        data = {
+            'departamento': departamento
+        }
+        return render(request, 'app/Departamento/detalle_departamento.html', data)
+    else: 
+        return redirect('home')
+
+    
+class LoginMixin(object):
+    def dispatch(self, request, *args, **kwargs):
+        if request.user.is_authenticated:
+            return super().dispatch(request, *args, **kwargs)
+        return redirect('home')
+    
+class RegistrarReserva(LoginMixin,CreateView):
     model = models.Reserva
-    success_url = reverse_lazy('Departamento/detalle_departamento')
+    success_url = reverse_lazy('home')
 
-    def post(self,request,*arg,**kwargs):
-        if request.is_ajax():
+    @csrf_exempt
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
+
+    @csrf_exempt
+    def post(self, request, *args, **kwargs):
+        if request.headers.get('x-requested-with') == 'XMLHttpRequest':
             print(request.POST)
-        return HttpResponse('a')
+            departamento = models.Departamento.objects.filter(id_dep =request.POST.get('departamento')).first()
+            usuario = models.Usuario.objects.filter(id=request.POST.get('usuario')).first()
+            if departamento and usuario:
+                avance = departamento.valordiario_dep
+                nueva_reserva = self.model(
+                    departamento = departamento,
+                    usuario = usuario,
+                    avance = avance
+                )
+                nueva_reserva.save()
+                mensaje = f'{self.model.__name__} registrada correctamente!'
+                error = 'No hay error!'
+                response = JsonResponse({'mensaje': mensaje, 'error': error,'url':self.success_url})
+                response.status_code = 201
+                return response
 
+        return redirect('home')
+
+@login_required
+def ListarReservas(request):
+    reservas = models.Reserva.objects.filter(usuario=request.user, estado=True)
+    page = request.GET.get('page', 1)
+    
+    try:
+        paginator = Paginator(reservas, 5)
+        reservas = paginator.page(page)
+    except: 
+        raise Http404
+    
+    data = {
+        'entity': reservas,
+        'paginator': paginator
+    }
+    return render(request, 'app/listar_reservas.html', data)
+
+
+class Checkin(View):
+    def get(self, request, id_reserva):
+        reserva = get_object_or_404(models.Reserva, id_reserva=id_reserva)
+        form = forms.ReservaForm(instance=reserva)
+
+        for field_name in form.fields:
+            form.fields[field_name].disabled = True
+
+        data = {
+            'form': form
+        }
+        return render(request, 'app/checkin.html', data)
+
+
+def cancelar_reserva(request, id_reserva):
+    reserva = get_object_or_404(models.Reserva, id_reserva=id_reserva)
+    
+    if request.method == 'POST':
+        departamento = reserva.departamento
+        departamento.estado_dep = True
+        departamento.save()
+        reserva.save()
+        
+        return redirect('home')
+    
+    data = {
+        'reserva': reserva
+    }
+    return render(request, 'app/cancelar_reserva.html', data)
 
 #Cliente
 def agregar_Clientes(request):
@@ -181,22 +379,22 @@ def eliminar_Clientes(request, id):
         return redirect(to="listar_Clientes")
 
 
-#Usuarios
-def registro(request):
-    data = {
-        'form': forms.CustomUserCreationForm()
-    }
+#Usuarios BORRAR
+# def registro(request):
+#     data = {
+#         'form': forms.CustomUserCreationForm()
+#     }
 
-    if request.method == 'POST':
-        formulario = forms.CustomUserCreationForm(data=request.POST)
-        if formulario.is_valid():
-            formulario.save()
-            user = authenticate(username=formulario.cleaned_data["username"], password=formulario.cleaned_data["password1"])
-            login(request, user)
-            messages.success(request, "Te has registrado correctamente")
-            return redirect(to="home")
+#     if request.method == 'POST':
+#         formulario = forms.CustomUserCreationForm(data=request.POST)
+#         if formulario.is_valid():
+#             formulario.save()
+#             user = authenticate(username=formulario.cleaned_data["username"], password=formulario.cleaned_data["password1"])
+#             login(request, user)
+#             messages.success(request, "Te has registrado correctamente")
+#             return redirect(to="home")
             
-    return render(request, 'registration/registro.html', data)
+#     return render(request, 'registration/registro.html', data)
 
 #/////////////////////////////////////////////////////////////////////////////////////////////////
 

@@ -1,0 +1,26 @@
+.bg{
+    min-height: 100vh;
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-attachment: fixed;
+    background-size: cover;
+}
+
+.banner{
+    height: 100vh;
+    background-size: cover;
+    background-position: center;
+    overflow: hidden;
+    position: relative;
+}
+
+.banner .waves{
+    position:absolute;
+    bottom: 0;
+    width: 100%;
+    left: 0;
+}
+
+*{
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
